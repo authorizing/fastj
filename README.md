@@ -1,11 +1,13 @@
 # DLL Injector
 
-A simple, modern C++ DLL injector with command-line interface. This project demonstrates basic DLL injection using LoadLibrary method, while being structured to easily accommodate additional injection techniques.
+A simple, modern C++ DLL injector with command-line interface. This project demonstrates DLL injection using both LoadLibrary and Manual Mapping methods.
 
 ## Features
 
 - 🚀 Clean, modern C++ implementation
-- 💉 LoadLibrary injection method (easily extendable)
+- 💉 Multiple injection methods:
+  - LoadLibrary injection
+  - Manual Mapping injection
 - 🎯 Process targeting by name
 - ⏱️ Configurable process wait timeout
 - 🛠️ Command-line interface
@@ -58,50 +60,51 @@ Basic syntax:
 
 ```
 dll-injector [options]
-
 Options:
 -p, --process <name> Target process name (default: cs2.exe)
 -d, --dll <path> Path to DLL file
 -w, --wait <seconds> Wait timeout in seconds (default: infinite)
+-t, --type <type> Injection type (default: loadlibrary)
+Types: loadlibrary, manualmap
 -h, --help Show this help message
 ```
 
 Examples:
 
-Inject into specific process
-dll-injector -p notepad.exe -d path/to/your.dll
-
-Wait up to 30 seconds for process
-dll-injector -p cs2.exe -d path/to/your.dll -w 30
-
+```bash
+LoadLibrary injection into specific process
+dll-injector -p notepad.exe -d path/to/your.dll -t loadlibrary
+Manual Map injection with 30 second wait
+dll-injector -p cs2.exe -d path/to/your.dll -t manualmap -w 30
 Show help
 dll-injector --help
-
-## Extending Injection Methods
-
-The project is structured to easily add new injection methods. To implement a new method:
-
-1. Add your new injection method to the `DLLInjector` class in `injector.h`:
-
-```cpp
-class DLLInjector {
-public:
-// add your new injection method
-};
 ```
 
-2. Implement the method in `injector.cpp`
-3. Update the main injection logic in `main.cpp`
+## Injection Methods
 
-### Potential Injection Methods to Add
+### LoadLibrary Injection
+The classic method that uses Windows' LoadLibrary function. Simple but easily detectable.
+- Pros:
+  - Simple implementation
+  - Reliable
+  - Handles DLL dependencies automatically
+- Cons:
+  - Easily detectable
+  - Shows up in loaded modules list
+  - Limited control over loading process
 
-- Manual Mapping
-- SetWindowsHookEx
-- NtCreateThreadEx
-- QueueUserAPC
-- Thread Hijacking
-- Section Mapping
-- Module Stomping
+### Manual Mapping
+A more advanced method that manually maps the PE file into memory.
+- Pros:
+  - More stealthy
+  - Doesn't use LoadLibrary
+  - Not visible in loaded modules list
+  - Full control over loading process
+- Cons:
+  - More complex implementation
+  - Must handle relocations manually
+  - May fail with complex DLLs
+  - Dependencies must be handled manually
 
 ## Security Considerations
 
