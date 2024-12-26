@@ -73,9 +73,9 @@ Examples:
 
 ```bash
 LoadLibrary injection into specific process
-dll-injector -p notepad.exe -d path/to/your.dll -t loadlibrary
+dll-injector -p notepad.exe -d path/to/your.dll -t ll
 Manual Map injection with 30 second wait
-dll-injector -p cs2.exe -d path/to/your.dll -t manualmap -w 30
+dll-injector -p cs2.exe -d path/to/your.dll -t mm -w 30
 Show help
 dll-injector --help
 ```
